@@ -1,0 +1,14 @@
+services:
+  mc:
+    image: itzg/minecraft-server
+    environment:
+      EULA: true
+      TYPE: SPIGOT
+      VERSION: 1.21
+    ports:
+      - "25565:25565"
+    volumes:
+      - data:/data
+      - ./plugin:/data/plugins
+volumes:
+  data: {}
