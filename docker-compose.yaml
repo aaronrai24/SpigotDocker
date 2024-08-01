@@ -3,6 +3,10 @@ services:
     image: itzg/minecraft-server
     environment:
       EULA: "true"
+      VIEW_DISTANCE: 15
+      MEMORY: 2G
+      MOTD: "Minecraft but wayyyy harder :)"
+      ICON: https://static.wikia.nocookie.net/geometry-dash-unofficial/images/3/36/Extreme_Demon.png/revision/latest?cb=20180214082927
       TYPE: SPIGOT
       VERSION: "1.21"
       PLUGINS: >-
@@ -11,16 +15,12 @@ services:
       - "25565:25565"
     volumes:
       - data:/data
-      # - ./plugin:/data/plugins
   
   ngrok:
     image: ngrok/ngrok
-    ports:
-      - "4040:4040"
+    command: ["tcp", "minecraft1:25565", "--log", "stdout", "--authtoken", "${NGROK_AUTH}"]
     environment:
-      NGROK_PROTOCOL: tcp
-      NGROK_PORT: minecraft1:25565
-      NGROK_AUTH: $$NGROK_AUTH
+      - NGROK_AUTHTOKEN=${NGROK_AUTH}
     depends_on:
       - minecraft1
 volumes:
