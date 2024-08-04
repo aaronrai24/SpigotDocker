@@ -9,14 +9,14 @@ services:
       ICON: https://static.wikia.nocookie.net/geometry-dash-unofficial/images/3/36/Extreme_Demon.png/revision/latest?cb=20180214082927
       TYPE: SPIGOT
       VERSION: "1.21"
-      PLUGINS: >-
-        https://github.com/aaronrai24/MinecraftInsaneDifficulty/releases/download/v1.0.1/MinecraftInsaneDifficulty.jar
     ports:
       - "25565:25565"
     volumes:
       - data:/data
       - ./ops.json:/data/ops.json
-  
+      - ./custom-entrypoint.sh:/custom-entrypoint.sh
+    entrypoint: ["/bin/bash", "/custom-entrypoint.sh"]
+
   ngrok:
     image: ngrok/ngrok
     command: ["tcp", "minecraft1:25565", "--log", "stdout", "--authtoken", "${NGROK_AUTH}"]
@@ -24,5 +24,6 @@ services:
       - NGROK_AUTHTOKEN=${NGROK_AUTH}
     depends_on:
       - minecraft1
+
 volumes:
   data: {}
